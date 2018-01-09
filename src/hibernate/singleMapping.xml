@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="hibernate.CustomerEntity" table="Customer" schema="assignment11">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+        <set name="ordrsById" inverse="true">
+            <key>
+                <column name="customer_id"/>
+            </key>
+            <one-to-many not-found="ignore" class="hibernate.OrdrEntity"/>
+        </set>
+        <set name="vipCustomersById" inverse="true">
+            <key>
+                <column name="id_customer" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="hibernate.VipCustomerEntity"/>
+        </set>
+    </class>
+    <class name="hibernate.OrdrEntity" table="Ordr" schema="assignment11">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="customerId" column="customer_id"/>
+        <property name="date" column="date"/>
+        <many-to-one name="customerByCustomerId" class="hibernate.CustomerEntity" insert = "false" update = "false">
+            <column name="customer_id"/>
+        </many-to-one>
+        <set name="ordrItemsById" inverse="true">
+            <key>
+                <column name="order_id" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="hibernate.OrdrItemEntity"/>
+        </set>
+    </class>
+    <class name="hibernate.OrdrItemEntity" table="OrdrItem" schema="assignment11">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="orderId" column="order_id"/>
+        <property name="productId" column="product_id"/>
+        <property name="count" column="count"/>
+        <many-to-one name="ordrByOrderId" class="hibernate.OrdrEntity" insert = "false" update = "false">
+            <column name="order_id" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="productByProductId" class="hibernate.ProductEntity" insert = "false" update = "false">
+            <column name="product_id" not-null="true"/>
+        </many-to-one>
+    </class>
+    <class name="hibernate.ProductEntity" table="Product" schema="assignment11">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="name" column="name"/>
+        <set name="ordrItemsById" inverse="true">
+            <key>
+                <column name="product_id" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="hibernate.OrdrItemEntity"/>
+        </set>
+    </class>
+    <class name="hibernate.VipCustomerEntity" table="VIPCustomer" schema="assignment11">
+        <id name="id" column="id">
+            <generator class="identity"/>
+        </id>
+        <property name="idCustomer" column="id_customer"/>
+        <property name="discountRate" column="discountRate"/>
+        <many-to-one name="customerByIdCustomer" class="hibernate.CustomerEntity" insert = "false" update = "false">
+            <column name="id_customer" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>
