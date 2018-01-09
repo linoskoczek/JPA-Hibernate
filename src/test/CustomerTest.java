@@ -1,26 +1,14 @@
 package test;
 
-import hibernate.CustomerEntity;
-import hibernate.HibernateUtil;
 import hibernate.VipCustomerEntity;
 import management.CustomerRepository;
 import management.VipCustomerRepository;
-import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
-public class CustomerTest {
-    private Session session;
-    private CustomerEntity customer;
-
-    @Before
-    public void prepare() {
-        session = HibernateUtil.getSession();
-        session.beginTransaction();
-    }
+public class CustomerTest extends TestBasics {
 
     @After
     public void close() {
@@ -42,7 +30,7 @@ public class CustomerTest {
     @Test
     public void addVipCustomer() {
         addCustomer();
-        VipCustomerEntity vip = VipCustomerRepository.createVIPCustomer(customer);
+        VipCustomerEntity vip = VipCustomerRepository.createVipCustomer(customer);
         session.save(vip);
 
         Query idQuery = session.createQuery("SELECT id FROM CustomerEntity WHERE name = 'Janusz'");
