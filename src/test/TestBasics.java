@@ -1,7 +1,9 @@
 package test;
 
 import hibernate.*;
+import management.Repository;
 import org.hibernate.Session;
+import org.junit.After;
 import org.junit.Before;
 
 import java.util.ArrayList;
@@ -19,7 +21,14 @@ public abstract class TestBasics {
     @Before
     public void prepare() {
         session = HibernateUtil.getSession();
+        Repository.session = session;
         session.beginTransaction();
+    }
+
+    @After
+    public void close() {
+        //session.getTransaction().commit();
+        session.getTransaction().rollback();
     }
 
 }

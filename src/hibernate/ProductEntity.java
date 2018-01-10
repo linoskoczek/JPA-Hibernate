@@ -9,6 +9,7 @@ import java.util.Objects;
 public class ProductEntity {
     private int id;
     private String name;
+    private int price;
     private Collection<OrdrItemEntity> ordrItemsById;
     private Collection<OrdrItemEntity> ordrItemsById_0;
 
@@ -20,6 +21,16 @@ public class ProductEntity {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "name")
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     @Basic

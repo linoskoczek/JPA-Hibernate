@@ -12,7 +12,6 @@ public class OrdrTest extends ProductTest {
     public void addOrder() {
         addCustomer();
         ordr = OrdrRepository.createOrder(customer);
-        session.save(ordr);
 
         Query idQuery = session.createQuery("SELECT id FROM OrdrEntity");
         int id = (int) idQuery.list().get(0);
@@ -27,9 +26,8 @@ public class OrdrTest extends ProductTest {
         addOrder();
 
         items.add(OrdrRepository.addItemToOrder(ordr, products.get(0), random.nextInt(5)+1));
+        items.add(OrdrRepository.addItemToOrder(ordr, products.get(0), 2));
         items.add(OrdrRepository.addItemToOrder(ordr, products.get(1), random.nextInt(2)+1)); //todo adding same product twice
-        session.save(items.get(0));
-        session.save(items.get(1));
 
         Assert.assertEquals(session.createQuery("FROM OrdrItemEntity").list().size(), 2);
 
@@ -38,5 +36,35 @@ public class OrdrTest extends ProductTest {
         
         Assert.assertTrue(list.contains(items.get(0).getId()));
         Assert.assertTrue(list.contains(items.get(1).getId()));
+    }
+
+    @Test
+    public void customerWhoShouldBecomeVip() {
+        addProducts();
+        addOrder();
+
+        Assert.assertEquals(session.createQuery("FROM VipCustomerEntity").list().size(), 0);
+
+        items.add(OrdrRepository.addItemToOrder(ordr, products.get(0), 11)); //enough to make value > 1000
+
+        Assert.assertEquals(session.createQuery("FROM VipCustomerEntity").list().size(), 1);
+        Assert.assertEquals((int) session.createQuery("SELECT discountRate FROM VipCustomerEntity").list().get(0), 5);
+
+        items.add(OrdrRepository.addItemToOrder(ordr, products.get(0), 77)); //enough to make value > 5000
+
+        Assert.assertEquals(session.createQuery("FROM VipCustomerEntity").list().size(), 1);
+        Assert.assertEquals((int) session.createQuery("SELECT discountRate FROM VipCustomerEntity").list().get(0), 10);
+    }
+
+    @Test
+    public void customerWhoShouldNotBecomeVip() {
+        addProducts();
+        addOrder();
+
+        Assert.assertEquals(session.createQuery("FROM VipCustomerEntity").list().size(), 0);
+
+        items.add(OrdrRepository.addItemToOrder(ordr, products.get(0), 1)); //enough to make value > 1000
+
+        Assert.assertEquals(session.createQuery("FROM VipCustomerEntity").list().size(), 0);
     }
 }

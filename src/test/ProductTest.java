@@ -11,10 +11,8 @@ import java.util.List;
 public class ProductTest extends CustomerTest {
     @Test
     public void addProducts() {
-        ProductEntity product1 = ProductRepository.createProduct("Onion");
-        ProductEntity product2 = ProductRepository.createProduct("Garlic");
-        session.save(product1);
-        session.save(product2);
+        ProductEntity product1 = ProductRepository.createProduct("Onion", 100);
+        ProductEntity product2 = ProductRepository.createProduct("Garlic", 80);
 
         products.add(product1);
         products.add(product2);

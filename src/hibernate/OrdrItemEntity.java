@@ -9,7 +9,7 @@ public class OrdrItemEntity {
     private int id;
     private Integer orderId;
     private Integer productId;
-    private Integer count;
+    private Integer counter;
     private OrdrEntity ordrByOrderId;
     private OrdrEntity ordrByOrderId_0;
     private ProductEntity productByProductId;
@@ -47,12 +47,12 @@ public class OrdrItemEntity {
 
     @Basic
     @Column(name = "count")
-    public Integer getCount() {
-        return count;
+    public Integer getCounter() {
+        return counter;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setCounter(Integer count) {
+        this.counter = count;
     }
 
     @Override
@@ -63,13 +63,13 @@ public class OrdrItemEntity {
         return id == that.id &&
                 Objects.equals(orderId, that.orderId) &&
                 Objects.equals(productId, that.productId) &&
-                Objects.equals(count, that.count);
+                Objects.equals(counter, that.counter);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, orderId, productId, count);
+        return Objects.hash(id, orderId, productId, counter);
     }
 
     @ManyToOne

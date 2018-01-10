@@ -1053,43 +1053,50 @@
       <DataType>varchar(25)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="258" parent="233" name="PRIMARY">
+    <column id="258" parent="233" name="price">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="259" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="259" parent="234" name="id">
+    <column id="260" parent="234" name="id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="260" parent="234" name="id_customer">
+    <column id="261" parent="234" name="id_customer">
       <Position>2</Position>
       <DataType>int(11)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="261" parent="234" name="discountRate">
+    <column id="262" parent="234" name="discountRate">
       <Position>3</Position>
       <DataType>decimal(10)|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="262" parent="234" name="FK9miytm17cjluvi33vikbc1smt">
+    <index id="263" parent="234" name="FK9miytm17cjluvi33vikbc1smt">
       <ColNames>id_customer</ColNames>
     </index>
-    <key id="263" parent="234" name="PRIMARY">
+    <key id="264" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="264" parent="234" name="FK9miytm17cjluvi33vikbc1smt">
+    <foreign-key id="265" parent="234" name="FK9miytm17cjluvi33vikbc1smt">
       <ColNames>id_customer</ColNames>
       <RefSchemaName>assignment11</RefSchemaName>
       <RefTableName>Customer</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="265" parent="234" name="VIPCustomer_ibfk_1">
+    <foreign-key id="266" parent="234" name="VIPCustomer_ibfk_1">
       <ColNames>id_customer</ColNames>
       <RefSchemaName>assignment11</RefSchemaName>
       <RefTableName>Customer</RefTableName>

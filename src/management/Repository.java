@@ -1,7 +1,8 @@
 package management;
 
 
+import org.hibernate.Session;
+
 public class Repository {
-    public static void getCustomers() {
-    }
+    public static Session session = null;
 }
