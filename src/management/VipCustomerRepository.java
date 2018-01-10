@@ -1,29 +1,39 @@
 package management;
 
 import hibernate.CustomerEntity;
-import hibernate.HibernateUtil;
 import hibernate.VipCustomerEntity;
-import org.hibernate.Session;
+import org.hibernate.query.Query;
+
+import java.util.List;
 
 public class VipCustomerRepository extends Repository {
     public static VipCustomerEntity createVipCustomer(CustomerEntity customerEntity) {
         return createVipCustomer(customerEntity.getId());
     }
 
-    public static VipCustomerEntity createVipCustomer(int customerId) { // todo dont create new vip customer, check if already exists
+    public static VipCustomerEntity createVipCustomer(int customerId) {
         return createVipCustomer(customerId, 0);
     }
 
     public static VipCustomerEntity createVipCustomer(int customerId, int discount) {
-        VipCustomerEntity vip = new VipCustomerEntity();
-        vip.setIdCustomer(customerId);
-        vip.setDiscountRate(discount);
-        session.save(vip);
-        return vip;
+        int vipId = getVipIdByCustomerId(customerId);
+        if(vipId == -1) {
+            VipCustomerEntity vip = new VipCustomerEntity();
+            vip.setIdCustomer(customerId);
+            vip.setDiscountRate(discount);
+            session.save(vip);
+            return vip;
+        }
+        else {
+            VipCustomerEntity vip =  session.get(VipCustomerEntity.class, vipId);
+            vip.setDiscountRate(discount);
+            session.save(vip);
+            return vip;
+        }
+
     }
 
     public static boolean checkIfVip(int customerId) {
-        Session session = HibernateUtil.getSession();
         boolean isVip = false;
 
         long sumOfOrderValues = OrdrRepository.getSumOfOrderValues(customerId);
@@ -38,7 +48,38 @@ public class VipCustomerRepository extends Repository {
                 createVipCustomer(customerId, 5);
 
         }
-        //todo else to check if have to remove him
+
         return isVip;
+    }
+
+    public static void removeVipByCustomerId(int customerId) {
+        int vipId = getVipIdByCustomerId(customerId);
+        removeVip(vipId);
+    }
+
+    public static void removeVip(int id) {
+        VipCustomerEntity vip =  session.get(VipCustomerEntity.class, id);
+        removeVip(vip);
+    }
+
+    public static void removeVip(VipCustomerEntity vip) {
+        if(vip != null) {
+            session.delete(vip);
+            session.save(vip);
+        }
+    }
+
+    public static int getVipIdByCustomerId(int customerId) {
+        try {
+            Query query = session
+                    .createQuery("SELECT id FROM VipCustomerEntity WHERE idCustomer = :customerId")
+                    .setParameter("customerId", customerId);
+
+            List list = query.list();
+            return (int) list.get(0);
+        }
+        catch(IndexOutOfBoundsException ignored) {
+            return -1;
+        }
     }
 }

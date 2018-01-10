@@ -22,13 +22,14 @@ public class OrdrRepository extends Repository {
         item.setCounter(count);
         session.save(item);
 
-        VipCustomerRepository.checkIfVip(order.getCustomerId());
+        if(!VipCustomerRepository.checkIfVip(order.getCustomerId())) {
+            VipCustomerRepository.removeVipByCustomerId(order.getCustomerId());
+        }
 
         return item;
     }
 
     public static long getSumOfOrderValues(int customerId) {
-        //todo check only one year back
         long[] sum = {0};
 
         Timestamp oneYearBack = new Timestamp(System.currentTimeMillis() - ((long) 31556952 * 1000));

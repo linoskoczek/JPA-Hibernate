@@ -27,7 +27,6 @@ public class OrdrTest extends ProductTest {
 
         items.add(OrdrRepository.addItemToOrder(ordr, products.get(0), random.nextInt(5)+1));
         items.add(OrdrRepository.addItemToOrder(ordr, products.get(0), 2));
-        items.add(OrdrRepository.addItemToOrder(ordr, products.get(1), random.nextInt(2)+1)); //todo adding same product twice
 
         Assert.assertEquals(session.createQuery("FROM OrdrItemEntity").list().size(), 2);
 
@@ -67,4 +66,5 @@ public class OrdrTest extends ProductTest {
 
         Assert.assertEquals(session.createQuery("FROM VipCustomerEntity").list().size(), 0);
     }
+
 }
